@@ -1,6 +1,6 @@
 ## Welcome
 
-This is a sample node api server built with express. This allows you to filter a list for Fillout form submissions based on a stringified JSON query param.
+This is a sample node api server built with express. This allows you to filter a list of responses for specific Fillout form.
 
 ## Setup
 
@@ -19,6 +19,7 @@ node app.js
 ## Endpoint Access
 
 - {localhost||server}/{formId}/filteredResponses?filter={requires strinigified JSON}
+- You may pass additional query string params based on Fillout's endpoint: 	[Fillout REST API - Get Submissions](https://www.fillout.com/help/fillout-rest-api#a981e824966448029aeb091e0706d070)
 
 ## Sample JSON filters(must stringify)
 
