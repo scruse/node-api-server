@@ -22,7 +22,7 @@ node app.js
 - You may pass additional query string params based on Fillout's endpoint: 	[Fillout REST API - Get Submissions](https://www.fillout.com/help/fillout-rest-api#a981e824966448029aeb091e0706d070)
 - Example: {localhost||server}/{formId}/filteredResponses?*sort=desc*&filter={requires strinigified JSON}
 
-## Sample JSON filters(must stringify)
+## Sample JSON filter strings(must stringify)
 
 `[
   {
