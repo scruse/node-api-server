@@ -4,7 +4,7 @@ This is a sample node api server built with express. This allows you to filter a
 
 ## Setup
 
-In order you run, **you will** need to create a .env file with the following values:
+In order you run locally, **you will** need to create a .env file with the following values:
 
 - PORT (optional)
 - API_KEY
