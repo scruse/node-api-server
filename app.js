@@ -158,7 +158,7 @@ const filterByCriteria = (responses, criteria) => {
     //check to see if the questions meet the criteria
     questions.filter((question) => {
       let meetsCriteria = true
-      criteria.every(({ id, condition, value }) => {
+      criteria.some(({ id, condition, value }) => {
         if (question.id === id) {
           const { questionValue, criteriaValue } = sanitizeValues(
             question['type'],
@@ -173,11 +173,11 @@ const filterByCriteria = (responses, criteria) => {
         } else {
           meetsCriteria = false
         }
-
-        if (meetsCriteria) {
-          filteredData.push(submission)
-        }
       })
+
+      if (meetsCriteria) {
+        filteredData.push(submission)
+      }
     })
   }
   return filteredData
