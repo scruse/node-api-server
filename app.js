@@ -36,7 +36,6 @@ const QUESTION_TYPES = [
  * Calls the fillout api to get a specific form's submissions.
  */
 const fetchFormData = async (formId, formQueryParams) => {
-  console.log(formQueryParams)
   const queryParams = new URLSearchParams(formQueryParams)
   const sanitizedQueryString = `?${queryParams}`
   const url = process.env.API_URL
@@ -50,7 +49,6 @@ const fetchFormData = async (formId, formQueryParams) => {
       }
     )
     const { data } = response
-    console.log(data)
 
     return data
   } catch (error) {
