@@ -35,15 +35,22 @@ const QUESTION_TYPES = [
  * @param: <String> formId
  * Calls the fillout api to get a specific form's submissions.
  */
-const fetchFormData = async (formId) => {
+const fetchFormData = async (formId, formQueryParams) => {
+  console.log(formQueryParams)
+  const queryParams = new URLSearchParams(formQueryParams)
+  const sanitizedQueryString = `?${queryParams}`
   const url = process.env.API_URL
   const apiKey = process.env.API_KEY
 
   try {
-    const response = await axios.get(`${url}/forms/${formId}/submissions`, {
-      headers: { Authorization: `Bearer ${apiKey}` },
-    })
+    const response = await axios.get(
+      `${url}/forms/${formId}/submissions${sanitizedQueryString}`,
+      {
+        headers: { Authorization: `Bearer ${apiKey}` },
+      }
+    )
     const { data } = response
+    console.log(data)
 
     return data
   } catch (error) {
@@ -54,20 +61,22 @@ const fetchFormData = async (formId) => {
 app.get('/:formId/filteredResponses', async (req, res) => {
   const { formId } = req.params
   const filterCriteria = jsonParser(req.query.filter)
+  //cloning req.query but removing filter
+  const { filter, ...formQueryParams } = req.query
+  //get submission data from fillout api, based on formID
+  const submissionsData = await fetchFormData(formId, formQueryParams)
 
   if (typeof filterCriteria !== 'string') {
     try {
-      //get submission data from fillout api, based on formID
-      const submissionsData = await fetchFormData(formId)
       const { responses } = submissionsData
-
       //perform filtering based on the filter criteria
       const filteredData = filterByCriteria(responses, filterCriteria)
 
       //create a new return object, else send a message that no results were found
       if (filteredData.length > 0) {
-        //get page count based on 10 submissions per page...per page could be passed dynamically
-        const pageCount = Math.ceil(filteredData.length / 10)
+        //using the limit or setting 10 if limit is not available
+        const limit = formQueryParams.limit || 10
+        const pageCount = Math.ceil(filteredData.length / limit)
 
         const sanitizedData = {
           responses: filteredData,
@@ -83,7 +92,7 @@ app.get('/:formId/filteredResponses', async (req, res) => {
       console.log(`There was an error: ${error}`)
     }
   } else {
-    res.send(`Filter querystring must be stringified json...`)
+    res.send(submissionsData)
   }
 })
 
